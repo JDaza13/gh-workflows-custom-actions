@@ -7,15 +7,15 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Cache dependencies
+      - name: 🛒 Get code
+        uses: actions/checkout@v4.1.7
+      - name: 💾 Cache dependencies
         id: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4.0.2
         with:
           path: node_modules
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
+      - name: 🏢 Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Lint code
@@ -23,23 +23,23 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Cache dependencies
+      - name: 🛒 Get code
+        uses: actions/checkout@v4.1.7
+      - name: 💾 Cache dependencies
         id: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4.0.2
         with:
           path: node_modules
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
+      - name: 🏢 Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Test code
+      - name: 🧪 Test code
         id: run-tests
         run: npm run test
-      - name: Upload test report
+      - name: 🚨 Upload failed tests report
         if: failure() && steps.run-tests.outcome == 'failure'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: test-report
           path: test.json
@@ -47,21 +47,21 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Cache dependencies
+      - name: 🛒 Get code
+        uses: actions/checkout@v4.1.7
+      - name: 💾 Cache dependencies
         id: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4.0.2
         with:
           path: node_modules
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
+      - name: 🏢 Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build website
         run: npm run build
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+      - name: 📤 Upload artifacts
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: dist-files
           path: dist
@@ -69,10 +69,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Get build artifacts
-        uses: actions/download-artifact@v3
+      - name: 🛒 Get code
+        uses: actions/checkout@v4.1.7
+      - name: 📥 Download artifacts
+        uses: actions/download-artifact@v4.1.8
         with:
           name: dist-files
           path: ./dist
